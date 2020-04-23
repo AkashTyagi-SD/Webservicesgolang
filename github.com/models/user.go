@@ -1,22 +1,17 @@
 package models
 
+//User is a repreasention of user data
 type User struct {
-	Username  string `json:"username"`
-	FirstName string `json:"firstname"`
-	LastName  string `json:"lastname"`
-	Password  string `json:"password"`
-	Token     string `json:"token"`
+	UserID     int    `json:"userid"`
+	FirstName  string `json:"firstname"`
+	LastName   string `json:"lastname"`
+	EmailID    string `json:"emailid"`
+	Password   string `json:"password"`
+	IsRemember bool   `json:"isremember"`
 }
 
+//ResponseResult represention of error and result type
 type ResponseResult struct {
 	Error  string `json:"error"`
 	Result string `json:"result"`
-}
-
-type Employee struct {
-	Id        int
-	Name      string
-	Email     string
-	Address   string
-	Telephone string
 }

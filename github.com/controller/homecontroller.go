@@ -2,12 +2,15 @@ package controller
 
 import (
 	"encoding/json"
+	"io/ioutil"
+	"log"
 	"net/http"
 
 	"github.com/AkashTyagi-SD/Webservicesgolang/github.com/database"
 	"github.com/AkashTyagi-SD/Webservicesgolang/github.com/models"
 )
 
+//This function used for fetch data without input param
 func Index(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	db, err := database.CreateConnection()
@@ -35,5 +38,23 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		res = append(res, emp)
 	}
 	json.NewEncoder(w).Encode(res)
+
+}
+
+//Login function
+func login(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	var user models.User
+	body, _ := ioutil.ReadAll(r.Body)
+	err := json.Unmarshal(body, &user)
+	if err != nil {
+		log.Fatal(err)
+	}
+	db, err := database.CreateConnection()
+	if err != nil {
+		log.Fatal(err)
+	}
+	var result models.User
+	var res models.ResponseResult
 
 }
