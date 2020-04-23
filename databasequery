@@ -1,0 +1,12 @@
+query 1:
+Create user tabel:
+
+CREATE TABLE User (
+    userid int NOT NULL AUTO_INCREMENT,
+    firstname varchar(255),
+    lastname varchar(255),
+    emailid varchar(255) NOT NULL,
+    password varchar(255),
+    isremember BOOLEAN,
+    PRIMARY KEY (userid) 
+);
