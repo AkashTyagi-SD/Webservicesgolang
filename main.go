@@ -11,14 +11,9 @@ import (
 func main() {
 	log.Println("Server started on: http://localhost:8080")
 	router := mux.NewRouter()
-	router.HandleFunc("/posts", controller.Index).Methods("GET")
+	router.HandleFunc("/register", controller.Register).Methods("POST")
+	router.HandleFunc("/getuser", controller.Getuser).Methods("GET")
 
 	http.ListenAndServe(":8080", router)
-
-	// var empdata1 models.Emp
-	// empdata1.Name = "Akash"
-	// empdata1.Address = "Khilwai"
-	// empdata1.Age = 20
-	// showData(empdata1)
 
 }

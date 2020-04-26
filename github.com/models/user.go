@@ -12,6 +12,8 @@ type User struct {
 
 //ResponseResult represention of error and result type
 type ResponseResult struct {
-	Error  string `json:"error"`
-	Result string `json:"result"`
+	Status  bool   `json:"status"`
+	Error   string `json:"error"`
+	Message string `json:"message"`
+	Result  []User `json:"result"`
 }
