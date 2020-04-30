@@ -7,8 +7,10 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/AkashTyagi-SD/Webservicesgolang/github.com/constant"
 	"github.com/AkashTyagi-SD/Webservicesgolang/github.com/database"
 	"github.com/AkashTyagi-SD/Webservicesgolang/github.com/models"
+	"github.com/gorilla/mux"
 )
 
 func catch(err error) {
@@ -46,7 +48,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 //Register function
 func Register(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
+	constant.SetCommonHeader(w)
 	var user models.User
 	body, _ := ioutil.ReadAll(r.Body)
 	err := json.Unmarshal(body, &user)
@@ -54,7 +56,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		res.Status = false
 		res.Error = err.Error()
-		res.Message = "Registration Unsuccessful"
+		res.Message = constant.RegistrationUnsuccessfullMsg
 		json.NewEncoder(w).Encode(res)
 		return
 	}
@@ -62,7 +64,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		res.Status = false
 		res.Error = err.Error()
-		res.Message = "Registration Unsuccessful"
+		res.Message = constant.RegistrationUnsuccessfullMsg
 		json.NewEncoder(w).Encode(res)
 		return
 	}
@@ -75,7 +77,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		catch(er)
 	} else {
 		res.Status = true
-		res.Message = "Registration Successful"
+		res.Message = constant.RegistrationSuccessfullMsg
 		response := []models.User{}
 
 		selDB, err := db.Query("SELECT * FROM User ORDER BY userid DESC LIMIT 1")
@@ -111,15 +113,18 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 //Getuser function used for fetch data without input param
 func Getuser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
+	constant.SetCommonHeader(w)
 	db, err := database.CreateConnection()
-	selDB, err := db.Query("SELECT userid,firstname,lastname FROM User ORDER BY userid DESC")
+	params := mux.Vars(r)
+	inputUserID := params["userid"]
+	fmt.Println("userid", inputUserID)
+	selDB, err := db.Query("SELECT userid,firstname,lastname FROM User WHERE userid = ?", inputUserID)
 	if err != nil {
 		panic(err.Error())
 	}
-
 	defer db.Close()
 	defer selDB.Close()
+	var response models.ResponseResult
 	user := models.User{}
 	var userid int
 	var firstname, lastname string
@@ -129,12 +134,17 @@ func Getuser(w http.ResponseWriter, r *http.Request) {
 		err = selDB.Scan(&userid, &firstname, &lastname)
 		if err != nil {
 			panic(err.Error())
+		} else {
+			response.Status = true
+			response.Message = constant.GetuserDetailSuccessfullMsg
 		}
+
 		user.UserID = userid
 		user.FirstName = firstname
 		user.LastName = lastname
 		res = append(res, user)
+		response.Result = res
 	}
-	json.NewEncoder(w).Encode(res)
+	json.NewEncoder(w).Encode(response)
 
 }

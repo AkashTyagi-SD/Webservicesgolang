@@ -12,7 +12,7 @@ func main() {
 	log.Println("Server started on: http://localhost:8080")
 	router := mux.NewRouter()
 	router.HandleFunc("/register", controller.Register).Methods("POST")
-	router.HandleFunc("/getuser", controller.Getuser).Methods("GET")
+	router.HandleFunc("/getuser/{userid}", controller.Getuser).Methods("GET")
 
 	http.ListenAndServe(":8080", router)
 
