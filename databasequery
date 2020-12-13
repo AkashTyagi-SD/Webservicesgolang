@@ -1,3 +1,5 @@
+database name: golangdb
+
 query 1:
 Create user tabel:
 

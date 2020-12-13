@@ -9,11 +9,11 @@ import (
 )
 
 func main() {
-	log.Println("Server started on: http://localhost:8080")
+	log.Println("Server started on: http://localhost:8081")
 	router := mux.NewRouter()
 	router.HandleFunc("/register", controller.Register).Methods("POST")
 	router.HandleFunc("/getuser/{userid}", controller.Getuser).Methods("GET")
 
-	http.ListenAndServe(":8080", router)
+	http.ListenAndServe(":8081", router)
 
 }

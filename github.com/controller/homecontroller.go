@@ -19,6 +19,14 @@ func catch(err error) {
 	}
 }
 
+//SetMiddlewareJSON function is used for change response formate type
+func SetMiddlewareJSON(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		next(w, r)
+	}
+}
+
 // respondwithJSON write json response format
 func respondwithJSON(w http.ResponseWriter, code int, payload interface{}) {
 	response, _ := json.Marshal(payload)
